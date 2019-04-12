@@ -1,0 +1,168 @@
+翻译单位
+<translation_unit>::={external_declaration}<TK_EOF>
+
+----------------------------------------------------------------------------------
+外部声明
+<external_declaration>::=<function_definition>|<declaration>
+
+<function_definition>::= <type_specifier> <declarator><funcbody>
+
+<declaration>::= <type_specifier><TK_SEMICOLON>
+		|<type_specifier>< init_declarator_list><TK_SEMICOLON>
+
+<init_declarator_list>::=
+     <init_declarator>{<TK_COMMA> <init_declarator>}
+
+<init_declarator>::=
+     <declarator>|<declarator> <TK_ASSIGN><initializer>
+
+改写后文法：
+<external_declaration>::=
+ <type_specifier> (<TK_SEMICOLON> 
+     |<declarator><funcbody>
+	    |<declarator>[<TK_ASSIGN><initializer>]
+	     {<TK_COMMA> <declarator>[<TK_ASSIGN><initializer>]}
+		 <TK_SEMICOLON>
+----------------------------------------------------------------------------------
+初值符
+< initializer>::=<assignment_expression>
+----------------------------------------------------------------------------------
+类型区分符
+<type_specifier>::= <KW_INT>
+	| <KW_CHAR> 
+	| <KW_SHORT> 
+	| <KW_VOID >
+	| <struct_specifier>
+----------------------------------------------------------------------------------
+结构区分符
+<struct_specifier>::= 
+	<KW_STRUCT><IDENTIFIER><TK_BEGIN><struct_declaration_list><TK_END>
+		| <KW_STRUCT>  <IDENTIFIER>
+----------------------------------------------------------------------------------
+结构声明符表
+<struct_declaration_list>::=<struct_declaration>{<struct_declaration>}
+----------------------------------------------------------------------------------
+结构声明
+<struct_declaration>::=
+		<type_specifier><struct_declarator_list><TK_SEMICOLON>
+<struct_declarator_list>::=<declarator>{<TK_COMMA><declarator>}
+----------------------------------------------------------------------------------
+声明符
+<declarator>::={<pointer>}{<function_calling_convention>}
+	{<struct_member_alignment>}<direct_declarator>
+
+<pointer>::=<TK_STAR>
+----------------------------------------------------------------------------------
+直接声明符
+<direct_declarator>::=  <IDENTIFIER><direct_declarator_postfix>
+----------------------------------------------------------------------------------
+直接声明符后缀
+<direct_declarator_ postfix>::= {<TK_OPENBR><TK_CINT><TK_CLOSEBR>
+ 		|<TK_OPENBR><TK_CLOSEBR>
+		|<TK_OPENPA><parameter_type_list><TK_CLOSEPA> 
+		|<TK_OPENPA><TK_CLOSEPA>}
+----------------------------------------------------------------------------------
+解析形参类型表
+<parameter_type_list>::=<parameter_list>
+       |<parameter_list><TK_COMMA><TK_ELLIPSIS>
+
+<parameter_list>::=<parameter_declaration>
+		  {<TK_COMMA ><parameter_declaration>}
+----------------------------------------------------------------------------------
+函数体
+<funcbody>::=<compound_statement>
+----------------------------------------------------------------------------------
+语句
+<statement >::=<compound_statement> 
+		| <if_statement> 
+		| <return_statement> 
+		| <break_statement> 
+		| <continue_statement> 
+		| <for_statement> 
+		| <expression_statement>
+----------------------------------------------------------------------------------
+复合语句
+<compound_statement>::=<TK_BEGIN>{<declaration>}{<statement>}<TK_END>
+----------------------------------------------------------------------------------
+if语句
+<if_statement>::=<KW_IF><TK_OPENPA><expression>
+	<TK_CLOSEPA><statement>[<KW_ELSE><statement>]
+----------------------------------------------------------------------------------
+for语句
+<for_statement>::=<KW_FOR><TK_OPENPA><expression_statement>
+	<expression_statement><expression><TK_CLOSEPA><statement>
+----------------------------------------------------------------------------------
+continue语句
+<continue_statement>::=<KW_CONTINUE><TK_SEMICOLON>
+----------------------------------------------------------------------------------
+break语句
+<break_statement>::=<KW_BREAK><TK_SEMICOLON>
+----------------------------------------------------------------------------------
+return语句
+<return_statement>::=<KW_RETURN><TK_SEMICOLON>
+			|<KW_RETURN><expression><TK_SEMICOLON>
+----------------------------------------------------------------------------------
+表达式语句
+<expression_statement>::= <TK_SEMICOLON>|<expression> <TK_SEMICOLON>
+----------------------------------------------------------------------------------
+表达式
+<expression>::=<assignment_expression>{<TK_COMMA><assignment_expression>}
+----------------------------------------------------------------------------------
+赋值表达式
+<assignment_expression>::= <equality_expression>
+		|<unary_expression><TK_ASSIGN> <equality_expression>
+----------------------------------------------------------------------------------
+相等类表达式
+<equality_expression>::=<relational_expression>
+		{<TK_EQ> <relational_expression>
+		|<TK_NEQ><relational_expression>}
+----------------------------------------------------------------------------------
+关系表达式
+<relational_expression>::=<additive_expression>{
+		<TK_LT><additive_expression> 
+		|<TK_GT><additive_expression> 
+		|<TK_LEQ><additive_expression> 
+		|<TK_GEQ><additive_expression>}
+----------------------------------------------------------------------------------
+加减类表达式
+<additive_expression>::=< multiplicative_expression>
+		{<TK_PLUS> <multiplicative_expression>
+		<TK_MINUS>< multiplicative_expression>}
+----------------------------------------------------------------------------------
+乘除类表达式
+<multiplicative_expression>::=<unary_expression>
+		{<TK_STAR>  < unary_expression >
+		|<TK_DIVIDE>< unary_expression > 
+		|<TK_MOD>  < unary_expression >}
+----------------------------------------------------------------------------------
+一元表达式
+<unary_expression>::= <postfix_expression> 
+			|<TK_AND><unary_expression> 
+			|<TK_STAR><unary_expression> 
+			|<TK_PLUS><unary_expression> 
+			|<TK_MINUS><unary_expression> 
+			|<KW_SIZEOF><TK_OPENPA><type_specifier><TK_ CLOSEPA>
+----------------------------------------------------------------------------------
+sizeof表达式
+<sizeof_expression>::= 
+		<KW_SIZEOF><TK_OPENPA><type_specifier><TK_ CLOSEPA>
+----------------------------------------------------------------------------------
+后缀表达式
+<postfix_expression>::=  <primary_expression> 
+		{<TK_OPENBR><expression> <TK_CLOSEBR> 
+		|<TK_OPENPA><TK_CLOSEPA>
+		|<TK_OPENPA><argument_expression_list><TK_CLOSEPA>
+		|<TK_DOT><IDENTIFIER> 
+		|<TK_POINTSTO><IDENTIFIER>}
+----------------------------------------------------------------------------------
+初等表达式
+<primary_expression>::=<IDENTIFIER>
+		|<TK_CINT>
+		|<TK_CSTR>
+		|<TK_CCHAR>
+		|<TK_OPENPA><expression><TK_CLOSEPA>
+----------------------------------------------------------------------------------
+实参表达式表
+<argument_expression_list >::=<assignment_expression>
+		{<TK_COMMA> <assignment_expression>}
+----------------------------------------------------------------------------------
